@@ -7,7 +7,8 @@ class AppTheme{
     appBarTheme: const AppBarTheme(
       color: primary,
       elevation: 0
-    ),    
+    ),
+          
   );
 
 }
