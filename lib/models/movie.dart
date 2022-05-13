@@ -54,6 +54,14 @@ class Movie {
         voteCount: json["vote_count"],
     );
 
+    get fullPosterPath {
+      if(this.posterPath != null){
+      return 'https://image.tmdb.org/t/p/w500${this.posterPath}';
+      }else{
+        return 'https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg';
+      }
+    }
+
     // Map<String, dynamic> toMap() => {
         // "adult": adult,
         // "backdrop_path": backdropPath,
