@@ -2,6 +2,8 @@ import 'package:fl_peliculas/themes/app_theme.dart';
 import 'package:fl_peliculas/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
+import '../models/models.dart';
+
 class DetailsScreen extends StatelessWidget {
    
   const DetailsScreen({Key? key}) : super(key: key);
@@ -9,6 +11,7 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String movie = ModalRoute.of(context)?.settings.arguments.toString() ?? "sin titulo";
+      //final Movie movie = ModalRoute.of(context)?.settings.arguments;
 
       return  Scaffold(
         body: CustomScrollView(
