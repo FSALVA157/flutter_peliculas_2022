@@ -1,12 +1,33 @@
 import 'package:fl_peliculas/models/models.dart';
 import 'package:flutter/material.dart';
 
-class MovieSlider extends StatelessWidget {
+class MovieSlider extends StatefulWidget {
    final List<Movie> movies;
    final String? titulo;
+   final Function onNextPage;
 
-  const MovieSlider({Key? key, required this.movies, this.titulo}) : super(key: key);
-  
+  const MovieSlider({Key? key, required this.movies, required this.onNextPage , this.titulo}) : super(key: key);
+
+  @override
+  State<MovieSlider> createState() => _MovieSliderState();
+}
+
+
+
+class _MovieSliderState extends State<MovieSlider> {
+final ScrollController scrollController = new ScrollController();
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    scrollController.addListener(() { 
+      if(scrollController.position.pixels <= scrollController.position.maxScrollExtent - 500){
+          widget.onNextPage();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Container(
@@ -15,18 +36,19 @@ class MovieSlider extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if(titulo != null)
+          if(widget.titulo != null)
            Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Text(titulo!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+            child: Text(widget.titulo!, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
           ),
           const SizedBox(height: 10,),
           Expanded(
             child: ListView.builder(
+              controller: scrollController,
               scrollDirection: Axis.horizontal,
-              itemCount: movies.length,
+              itemCount: widget.movies.length,
               itemBuilder: (BuildContext context, int index){
-                return _MoviePoster(movie: this.movies[index],);
+                return _MoviePoster(movie: this.widget.movies[index],);
               }
               ),
           )
