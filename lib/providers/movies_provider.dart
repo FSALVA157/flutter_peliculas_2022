@@ -35,12 +35,20 @@ class MoviesProvider extends ChangeNotifier{
 
   getPopularMovies() async{
     _popularPage++;
-    var dataJson = await _getJsonData('3/movie/popular', _popularPage);
-    final popularMovieResponse = PopularMoviesResponse.fromJson(dataJson);
-    popularMoviesList = [...popularMoviesList,...popularMovieResponse.results];
+    print('PAGINA: $_popularPage');
+    if(_popularPage <= 500){
+        var dataJson = await _getJsonData('3/movie/popular', _popularPage);
+        final popularMovieResponse = PopularMoviesResponse.fromJson(dataJson);
+        popularMoviesList = [...popularMoviesList,...popularMovieResponse.results];
 
-    //linea que notifica el cambio a los subscribers
-    notifyListeners();
+        //linea que notifica el cambio a los subscribers
+        notifyListeners();
+    } 
+    
+    
+       
+    
+    
   }
 
 

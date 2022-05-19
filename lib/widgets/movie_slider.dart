@@ -22,7 +22,7 @@ final ScrollController scrollController = new ScrollController();
     // TODO: implement initState
     super.initState();
     scrollController.addListener(() { 
-      if(scrollController.position.pixels <= scrollController.position.maxScrollExtent - 500){
+      if(scrollController.position.pixels <= (scrollController.position.maxScrollExtent - 100)){
           widget.onNextPage();
       }
     });
@@ -32,7 +32,7 @@ final ScrollController scrollController = new ScrollController();
   Widget build(BuildContext context) {
     return  Container(
       width: double.infinity,
-      height: 230,
+      height: 280,      
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
