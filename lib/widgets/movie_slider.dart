@@ -22,7 +22,7 @@ final ScrollController scrollController = new ScrollController();
     // TODO: implement initState
     super.initState();
     scrollController.addListener(() { 
-      if(scrollController.position.pixels <= (scrollController.position.maxScrollExtent - 100)){
+      if(scrollController.position.pixels == (scrollController.position.maxScrollExtent)){
           widget.onNextPage();
       }
     });
@@ -75,7 +75,7 @@ class _MoviePoster extends StatelessWidget {
        child: Column(
         children: [
           GestureDetector(
-            onTap: (() => Navigator.pushNamed(context, 'details', arguments: 'llamado desde movie-slider')),
+            onTap: (() => Navigator.pushNamed(context, 'details', arguments: this.movie)),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child:  FadeInImage(
