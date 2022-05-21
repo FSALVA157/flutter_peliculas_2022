@@ -1,29 +1,54 @@
+import 'package:fl_peliculas/models/models.dart';
+import 'package:fl_peliculas/providers/movies_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class CastingCards extends StatelessWidget {
-   
-  const CastingCards({Key? key}) : super(key: key);
+  final int movieId; 
+  
+  const CastingCards({Key? key, required this.movieId}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 150, top: 15),
-      width: double.infinity,
-      height: 180,      
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 10,
-        itemBuilder: (BuildContext context, int index) {
-          return _SingleCast() ;
-        },
-      ),
-    );
-  }
+    final movieProvider = Provider.of<MoviesProvider>(context);
+    
+    return FutureBuilder(
+      future: movieProvider.getActoresMovie(movieId),
+          builder: (BuildContext context, AsyncSnapshot<List<Actor>> snapshot) {
+            if(!snapshot.hasData){
+                  return Container(
+                height: 180,
+                constraints: BoxConstraints(maxWidth: 100),
+                child: CupertinoActivityIndicator(),
+              );
+            }else{
+              final List<Actor> listado = snapshot.data!;
+
+              return Container(
+                    margin: const EdgeInsets.only(bottom: 150, top: 15),
+                    width: double.infinity,
+                    height: 180,      
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return _SingleCast(actor: listado[index],) ;
+                                },
+                              ),
+                            );
+                                  }
+                              },
+                            );
+     }
 }
 
 class _SingleCast extends StatelessWidget {
+  final Actor actor;
+
   const _SingleCast({
-    Key? key,
+    Key? key, required this.actor,
   }) : super(key: key);
 
   @override

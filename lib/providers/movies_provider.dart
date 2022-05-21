@@ -9,13 +9,15 @@ class MoviesProvider extends ChangeNotifier{
   List<Movie> nowPlayingList = [];
   List<Movie> popularMoviesList = [];
   int _popularPage = 0;
+  Map<int, List<Actor>> actoresInMemory ={};
+
   MoviesProvider(){
       this.getOnDisplayMovies();
       this.getPopularMovies();
   }
 
   Future<String>_getJsonData(String endpoint, [page = 1] ) async{
-      var url = Uri.https(_base_url, '3/movie/now_playing', {
+      var url = Uri.https(_base_url, endpoint, {
         'api_key': '6d6d52189580fcb80212d917146ea0fa',
         'language': 'es-ES',
         'page': '$page'
@@ -23,6 +25,13 @@ class MoviesProvider extends ChangeNotifier{
       var response = await http.get(url);
       return response.body;
   }
+
+  Future <List<Actor>> getActoresMovie(int idMovie) async {
+  var dataJson = await _getJsonData('3/movie/$idMovie/credits');
+  final actoresMovieResponse = ActoresMovieResponse.fromJson(dataJson);
+  actoresInMemory[idMovie] = actoresMovieResponse.cast;
+  return actoresMovieResponse.cast;
+}   
 
   getOnDisplayMovies() async{ 
   var dataJson = await _getJsonData('3/movie/now_playing');
@@ -45,9 +54,7 @@ class MoviesProvider extends ChangeNotifier{
         notifyListeners();
     } 
     
-    
-       
-    
+      
     
   }
 
