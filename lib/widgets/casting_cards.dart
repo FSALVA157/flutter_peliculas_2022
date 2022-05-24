@@ -62,15 +62,15 @@ class _SingleCast extends StatelessWidget {
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: const FadeInImage(
+              child: FadeInImage(
                 fit: BoxFit.cover,
                 placeholder: AssetImage('assets/no-image.jpg'),
-                image: NetworkImage('https://via.placeholder.com/300x400'),
+                image: NetworkImage(actor.fullProfilePath),
               ),
             )
             ),
             SizedBox(height: 5,),
-            const Text('actor.name.appellido.origen.ciudad.dni.detalles',
+             Text(actor.name,
              maxLines: 2,
              overflow: TextOverflow.ellipsis,
              textAlign: TextAlign.center,
