@@ -35,20 +35,24 @@ class MovieSearchDelegate extends SearchDelegate{
 
   @override
   Widget buildResults(BuildContext context) {
-     return Text('BuildResults');
-    
+     return Text('BuildResults');    
   }
 
-  @override
-  Widget buildSuggestions(BuildContext context) {
-      final moviesProvider = Provider.of<MoviesProvider>(context);
-    if(query == ''){
-      return Container(
-        
+  Widget emptyContainer(){
+    return Container(  
         child: const Center(
           child:  Icon(Icons.movie_rounded, color: Colors.black54,size: 100),
         ),
       );
+  }
+
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
+
+    if(query.isEmpty){
+      return emptyContainer();
     }else{
         moviesProvider.getSearchMovie(query);
          
@@ -57,8 +61,8 @@ class MovieSearchDelegate extends SearchDelegate{
           future: moviesProvider.getSearchMovie(query),
           builder: (BuildContext contex, AsyncSnapshot<List<Movie>> snapshot){
             if(!snapshot.hasData){
-              return Container(
-                child: Center(
+              return  Container(
+                child: const Center(
                   child: CircularProgressIndicator(),
                 ),
               );
@@ -67,34 +71,36 @@ class MovieSearchDelegate extends SearchDelegate{
               return ListView.builder(
                 itemCount: movies.length,
                 itemBuilder: (BuildContext context, int index) {
-                        return Text(movies[index].title);
+                        return _movieItem(pelicula: movies[index]);
                 },
-              );
-              
-              
-              
-              
+              );                          
             }
           }
-          );
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    }
-
-     
+          );           
+    }     
     
   }
+ 
+ }
 
+class _movieItem extends StatelessWidget {
+  final Movie pelicula;
+  const _movieItem({Key? key, required this.pelicula}) : super(key: key);
+  
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+        leading: FadeInImage(
+        image: NetworkImage(pelicula.fullPosterPath),
+        placeholder: AssetImage('assets/no-image.jpg'),
+        width: 100,
+        fit: BoxFit.cover,
+     ),
+     title: Text(pelicula.title),
+     subtitle: Text(pelicula.originalTitle),
+     onTap: (){
+       Navigator.pushNamed(context, 'details', arguments: pelicula);
+     },
+     );     
+  }
 }
